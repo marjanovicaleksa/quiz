@@ -1,4 +1,5 @@
 <script>
+    import {onMount} from 'svelte';
     export let question;
     export let correctAnswer;
     export let incorrectAnswers;
@@ -16,8 +17,15 @@
             alert("Wrong! The correct answer is "+correctAnswer+".");
         }
     }
-</script>
 
+    const getQuestion = async()=>{
+        const res = await fetch('https://opentdb.com/api.php?amount=1&difficulty=easy&type=multiple');
+        let data = await res.json();
+        question = data.results[0].question;
+        console.log(data);
+    }
+    onMount(getQuestion);
+</script>
 <div>
     <h3>{@html question}</h3>
     <div id="answers">
